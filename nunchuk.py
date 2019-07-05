@@ -33,8 +33,8 @@ class Nunchuk:
         with self.i2c_device as i2c:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
-            i2c.write(b'\xf0\x55')
-            i2c.write(b'\xfb\x00')
+            i2c.write(b'\xF0\x55')
+            i2c.write(b'\xFB\x00')
 
     @property
     def joystick(self):
@@ -68,5 +68,6 @@ class Nunchuk:
             i2c.write(address)
             time.sleep(delay)
             i2c.readinto(self.buffer)
+        time.sleep(delay)
         return self.buffer
 
