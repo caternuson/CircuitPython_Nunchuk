@@ -30,10 +30,12 @@ class Nunchuk:
     def __init__(self, i2c, address=_DEFAULT_ADDRESS):
         self.buffer = bytearray(6)
         self.i2c_device = I2CDevice(i2c, address)
+        time.sleep(0.1)
         with self.i2c_device as i2c:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
             i2c.write(b'\xF0\x55')
+            time.sleep(0.1)
             i2c.write(b'\xFB\x00')
 
     @property
@@ -65,6 +67,7 @@ class Nunchuk:
 
     def _read_register(self, address, delay=0.05):
         with self.i2c_device as i2c:
+            time.sleep(delay)
             i2c.write(address)
             time.sleep(delay)
             i2c.readinto(self.buffer)
