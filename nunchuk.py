@@ -23,6 +23,8 @@ import time
 from adafruit_bus_device.i2c_device import I2CDevice
 
 _DEFAULT_ADDRESS = 0x52
+_I2C_INIT_DELAY = .1
+_I2C_READ_DELAY = 0.01
 
 class Nunchuk:
     """Class which provides interface to Nintendo Nunchuk controller."""
@@ -30,13 +32,14 @@ class Nunchuk:
     def __init__(self, i2c, address=_DEFAULT_ADDRESS):
         self.buffer = bytearray(6)
         self.i2c_device = I2CDevice(i2c, address)
-        time.sleep(0.1)
+        time.sleep(_I2C_INIT_DELAY)
         with self.i2c_device as i2c:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
             i2c.write(b'\xF0\x55')
-            time.sleep(0.1)
+            time.sleep(_I2C_INIT_DELAY)
             i2c.write(b'\xFB\x00')
+        self._read_data()
 
     @property
     def joystick(self):
@@ -65,12 +68,12 @@ class Nunchuk:
     def _read_data(self):
         return self._read_register(b'\x00')
 
-    def _read_register(self, address, delay=0.05):
+    def _read_register(self, address):
         with self.i2c_device as i2c:
-            time.sleep(delay)
+            time.sleep(_I2C_READ_DELAY)
+#            i2c.write_then_readinto(address, self.buffer)
             i2c.write(address)
-            time.sleep(delay)
+            time.sleep(_I2C_READ_DELAY)
             i2c.readinto(self.buffer)
-        time.sleep(delay)
+            time.sleep(_I2C_READ_DELAY)
         return self.buffer
-
