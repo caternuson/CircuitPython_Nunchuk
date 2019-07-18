@@ -15,14 +15,17 @@ scaleY = 0.3
 cDown = False
 zDown = False
 
+#This is to allow double checking (only on left click - and it doesn't really work)
 CHECK_COUNT=0
-#x,y = nc.joystick
 
-while True:
-    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
+
+#This is just to show that we're getting back data - uncomment it and hold down the buttons
+#while True:
+#    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
 
 while True:
     x, y = nc.joystick
+	#Eliminate spurious reads
     if (x == 255 or y == 255):
         continue
     relX = x - centerX
