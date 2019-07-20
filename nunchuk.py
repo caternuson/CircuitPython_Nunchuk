@@ -35,28 +35,32 @@ class Nunchuk:
         self.buffer = bytearray(6)
         self.i2c_device = I2CDevice(i2c, address)
         time.sleep(0.1)
-        with self.i2c_device as i2c:
+        with self.i2c_device as i2c_dev:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
-            i2c.write(b'\xF0\x55')
+            i2c_dev.write(b'\xF0\x55')
             time.sleep(0.1)
-            i2c.write(b'\xFB\x00')
+            i2c_dev.write(b'\xFB\x00')
 
     @property
     def joystick(self):
+        """Return tuple of current joystick position."""
         self._read_data()
         return self.buffer[0], self.buffer[1]
 
     @property
-    def button_C(self):
+    def buttonC(self):
+        """Return current pressed state of button C."""
         return not bool(self._read_data()[5] & 0x02)
 
     @property
-    def button_Z(self):
+    def buttonZ(self):
+        """Return current pressed state of button Z."""
         return not bool(self._read_data()[5] & 0x01)
 
     @property
     def acceleration(self):
+        """Return 3 tuple of accelerometer reading."""
         self._read_data()
         x = (self.buffer[5] & 0xC0) >> 6
         x |= self.buffer[2] << 2
