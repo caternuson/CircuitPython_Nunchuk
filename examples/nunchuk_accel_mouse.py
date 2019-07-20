@@ -1,7 +1,6 @@
 import board
 import nunchuk
 from adafruit_hid.mouse import Mouse
-import time
 
 m = Mouse()
 nc = nunchuk.Nunchuk(board.I2C())
