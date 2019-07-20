@@ -49,12 +49,12 @@ class Nunchuk:
         return self.buffer[0], self.buffer[1]
 
     @property
-    def buttonC(self):
+    def button_C(self): #pylint: disable=invalid-name
         """Return current pressed state of button C."""
         return not bool(self._read_data()[5] & 0x02)
 
     @property
-    def buttonZ(self):
+    def button_Z(self): #pylint: disable=invalid-name
         """Return current pressed state of button Z."""
         return not bool(self._read_data()[5] & 0x01)
 
